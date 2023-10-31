@@ -1,15 +1,27 @@
-import Link from "next/link"
+import Link from 'next/link'
 
-export default function Home(){  
+
+const BASE_URL = 'https://api.mangadex.org'
+
+export default async function Home() {
   
+  const response = await fetch(`${BASE_URL}/manga`)
+  const json = await response.json()
+  const data = json.data
+   
+
   return (
-    <div className="flex flex-col justify-center items-center text-white bg-black h-screen">
-      <h1>hello World</h1>
+    <div className="flex flex-col justify-center items-center text-white bg-black h-screen w-screen overflow-scroll">
+      <ul className='flex flex-col space-y-4'>
+        {data.map((manga) => (
+          <li key={manga.id}>
+            <h1>{manga.attributes.title.en}</h1>
+            <h1>Id do mangá </h1>
+            <p className='text-red-600'>{manga.relationships[2].id }</p>
+          </li>
+        ))}
+      </ul>
       <Link href="/login">Login</Link>
     </div>
   )
 }
-
-
-
-
