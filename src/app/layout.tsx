@@ -1,5 +1,5 @@
 import "~/styles/globals.css";
-import { ReactNode } from "react"
+import { type ReactNode } from 'react';
 import { Roboto } from 'next/font/google'
 
 const roboto = Roboto({

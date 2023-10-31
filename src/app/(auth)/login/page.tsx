@@ -1,6 +1,5 @@
 import Link from 'next/link'
 
-
 export default function login() {
   return (
     <>
@@ -24,7 +23,7 @@ export default function login() {
           >
             Entrar
           </button>
-        <p className='text-muted:sm text-gray-600 '>Ainda não tem uma conta ? faça o {`cadastro`}</p>
+        <p className='text-muted:sm text-gray-600 '>Ainda não tem uma conta ? faça o <Link href='/register'>cadastro</Link></p>
         </form>
       </div>
     </div>
