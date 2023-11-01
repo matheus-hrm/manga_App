@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import listMangas from './components/listMangas'
+import fetchCovers from './components/fetchCovers'
 
 export default async function Home() {
   
   const data = await listMangas()
-  console.log(data)
+  
 
   return (
     <div className="flex flex-col justify-center items-center text-white bg-black h-screen w-screen overflow-scroll">

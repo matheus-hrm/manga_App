@@ -48,15 +48,32 @@ export default async function listMangas(): Promise<{ mangaIds: string[], coverF
   const data: MangaList[] = json.data
 
   const mangaIds: string[] = []
-  const coverFileNames: string[] = []
+  let coverFileNames: string[] = []
+  let coverFileIds: string[] = []
+
 
   data.forEach((manga: MangaList) => {
     mangaIds.push(manga.id)
 
-    const coverArt = manga.relationships.find((relationship) => relationship.type === 'cover_art')
-    if (coverArt) {
-      coverFileNames.push(coverArt.attributes?.fileName)
-    }
+    const coverArtid = manga.relationships.filter(relationship => relationship.type === 'cover_art')[0].id
+    coverFileIds.push(coverArtid)
+  })
+
+  async function fetchCoverFiles(coverFileIds: string[]) {
+    const responses = await Promise.all(
+      coverFileIds.map(id =>
+        fetch(`https://api.mangadex.org/cover/${id}`)
+      )
+    );
+  
+    const data = await Promise.all(responses.map(response => response.json()));
+  
+    return data;
+  }
+
+  const coverFiles = await fetchCoverFiles(coverFileIds)
+  coverFiles.forEach((coverFile: any) => {
+    coverFileNames.push(coverFile.data.attributes.fileName)
   })
 
   return { mangaIds, coverFileNames }
