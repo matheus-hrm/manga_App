@@ -5,6 +5,8 @@ import fetchCovers from './components/fetchCovers'
 export default async function Home() {
   
   const data = await listMangas()
+  const mangaIds = data.mangaIds
+  const coverFileNames = data.coverFileNames
   
 
   return (
