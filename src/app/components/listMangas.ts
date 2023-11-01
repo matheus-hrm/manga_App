@@ -1,4 +1,3 @@
-"use client"
 const BASE_URL = "https://api.mangadex.org"
 import axios from 'axios'
 
@@ -27,8 +26,6 @@ export default async function listMangas() {
         params: {
             order: {
                 rating: "desc",
-                
-                
             },
             limit: 10
         }
