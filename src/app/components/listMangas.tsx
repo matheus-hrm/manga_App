@@ -24,26 +24,24 @@ interface MangaList {
   ]
 }
 
-interface CoverProps {
-  mangaId: string;
-  coverFileName: string;
-}
-
-const queryParams = {
-  limit: 10,
+export const queryParams = {
+  limit: 5,
   offset: 0,
   order: {
-    createdAt: 'desc',  
+    createdAt: 'desc',
+    rating: 'desc',
+    followedCount: 'desc',  
   },
 }
 
 export default async function listMangas(): Promise<{ mangaIds: string[], coverFileNames: string[] }> {
-  const response = await fetch(`${BASE_URL}/manga?limit=${queryParams.limit}&offset=${queryParams.offset}&order[createdAt]=desc`, {
+  const response = await fetch(`${BASE_URL}/manga?limit=${queryParams.limit}&offset=${queryParams.offset}&order[rating]=desc`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   })
+
   const json  = await response.json()
   const data: MangaList[] = json.data
 
@@ -54,7 +52,6 @@ export default async function listMangas(): Promise<{ mangaIds: string[], coverF
 
   data.forEach((manga: MangaList) => {
     mangaIds.push(manga.id)
-
     const coverArtid = manga.relationships.filter(relationship => relationship.type === 'cover_art')[0].id
     coverFileIds.push(coverArtid)
   })
