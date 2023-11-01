@@ -30,6 +30,6 @@
     "**/*.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts"
-  ],
+, "src/app/components/test.ts"  ],
   "exclude": ["node_modules"]
 }
