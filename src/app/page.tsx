@@ -1,15 +1,11 @@
 import Link from 'next/link'
-
-
-const BASE_URL = 'https://api.mangadex.org'
+import listMangas from './components/listMangas'
 
 export default async function Home() {
   
-  const response = await fetch(`${BASE_URL}/manga`)
-  const json = await response.json()
-  const data = json.data
-  
-  
+  const data = await listMangas()
+  console.log(data)
+
   return (
     <div className="flex flex-col justify-center items-center text-white bg-black h-screen w-screen overflow-scroll">
       <ul className='flex flex-col space-y-4'>
