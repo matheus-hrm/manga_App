@@ -37,8 +37,7 @@ const queryParams = {
   },
 }
 
-export default async function listMangas({ 
-}): Promise<{ mangaIds: string[], coverFileNames: string[] }> {
+export default async function listMangas(): Promise<{ mangaIds: string[], coverFileNames: string[] }> {
   const response = await fetch(`${BASE_URL}/manga?limit=${queryParams.limit}&offset=${queryParams.offset}&order[createdAt]=desc`, {
     method: 'GET',
     headers: {
@@ -46,20 +45,20 @@ export default async function listMangas({
     },
   })
   const json  = await response.json()
-  const data = json.data
+  const data: MangaList[] = json.data
 
   const mangaIds: string[] = []
   const coverFileNames: string[] = []
 
-
-  data.forEach((manga: Manga) => {
+  data.forEach((manga: MangaList) => {
     mangaIds.push(manga.id)
 
     const coverArt = manga.relationships.find((relationship) => relationship.type === 'cover_art')
     if (coverArt) {
-      coverFileNames.push(coverArt.attributes.fileName)
+      coverFileNames.push(coverArt.attributes?.fileName)
     }
   })
 
   return { mangaIds, coverFileNames }
 }
+  
