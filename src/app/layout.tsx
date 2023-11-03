@@ -18,6 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={` ${roboto.variable}`}>
+      <link rel="icon" href="/public/favicon.png" type='icon'/>
       <body className="bg-[#03001F]">
         {children}
       </body>
