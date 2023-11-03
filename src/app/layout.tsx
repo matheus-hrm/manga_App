@@ -1,6 +1,7 @@
 import "~/styles/globals.css";
 import { type ReactNode } from 'react';
 import { Roboto } from 'next/font/google'
+import Footer from "./components/footer";
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -17,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={` ${roboto.variable}`}>
-      <body>
+      <body className="bg-[#03001F]">
         {children}
       </body>
     </html>

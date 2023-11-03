@@ -32,12 +32,12 @@ export default async function listMangas() {
     })
  
 
-    const mangaUnresolvedImage = [];
+    const mangaUnresolvedImage = []
     for (const item of response.data.data) {
         const name = item.attributes.title.en;
         const imageUnresolved = item.relationships.find((item) => item.type === "cover_art").id || "sem imagem";
         const imageResolved = await fetchCoverFiles(imageUnresolved, item.id);
-        mangaUnresolvedImage.push({ name, image: imageResolved });
+        mangaUnresolvedImage.push({ name  , image: imageResolved });
     }
 
 

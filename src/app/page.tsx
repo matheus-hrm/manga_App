@@ -1,13 +1,12 @@
 import Link from 'next/link'
-import listMangas from './components/listMangas';
-import axios from 'axios';
+import listMangas from './api/listMangas';
 
 export default async function Home() {
 
   let manga = [];   
   manga = await listMangas();
 
-  console.log(manga);
+  //console.log(manga);
 
   return (
     <div className="flex flex-col justify-center items-center text-white bg-black h-screen w-screen overflow-scroll">
