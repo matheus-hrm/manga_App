@@ -11,6 +11,8 @@ export default function Home() {
       <div className=" text-white h-screen w-screen overflow-scroll">
         <Header />
         <MangaList />
+        <MangaList />
+        <MangaList />
         <Link href="/login" className='p-4 '>Login</Link>
         <div className='bottom-0'>
           <Footer />

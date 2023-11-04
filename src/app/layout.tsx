@@ -1,7 +1,8 @@
 import "~/styles/globals.css";
-import { type ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 import { Roboto } from 'next/font/google'
 import Footer from "./components/footer";
+import Loading from "./loading";
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -21,6 +22,7 @@ export default function RootLayout({
       <title>MangaReader</title>
       <link rel="icon" href="/favicon.png" type='icon'/>
       <body className="bg-[#03001F]">
+        <Suspense fallback={<Loading/>}/>
         {children}
       </body>
     </html>
