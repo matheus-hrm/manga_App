@@ -28,7 +28,7 @@ export default async function listMangas() {
             order: {
                 followedCount: 'desc'
             },
-            limit: 8
+            limit: 5
         }
     })
  
