@@ -21,6 +21,8 @@ export default async function MangaPage({ params }) {
   const imageResolved = await fetchCoverFiles(imageUnresolved, params.id); // Use params.id
 
   const description = manga.data.attributes.description["pt-br"] || manga.data.attributes.description["en"] || "sem descrição";
+  const title = manga.data.attributes.title["pt-br"] || manga.data.attributes.title["en"] || manga.data.attributes.title["ja-ro"] || "sem título";
+
 
   return (
     <>
@@ -33,7 +35,10 @@ export default async function MangaPage({ params }) {
               <div className="m-2">
                 <div className="flex justify-between mb-2"><p className="text-sm">Status</p> <p className="text-sm">{manga.data.attributes.status}</p></div>
                 <div className="flex justify-between mb-2"><p className="text-sm">Demografia</p> <p className="text-sm">{manga.data.attributes.publicationDemographic}</p></div>
-                <div className="flex justify-between"><p className="text-sm">Ano</p> <p className="text-sm">{manga.data.attributes.year}</p></div>
+                <div className="flex justify-between mb-2"><p className="text-sm">Ano</p> <p className="text-sm">{manga.data.attributes.year}</p></div>
+                <div className="flex justify-between"><p className="text-sm">Autor</p> <p className="text-sm">
+                  {manga.data.relationships.map((item) => item.type === "author").id}
+                </p></div>
                 {/* <p className="text-sm">Gêneros: {manga.data.attributes.tags.map((item) => item.attributes.name["en"]).join(", ")}</p> */}
 
               </div>
@@ -43,8 +48,19 @@ export default async function MangaPage({ params }) {
 
 
         <div className=" bg-slate-800 w-[800px] h-[500px] rounded-sm ml-5">
-          <h1 className="text-xl m-4">Sinopse de {manga.data.attributes.title.en}</h1>
-          <p className="text-base m-4">{description.split("**")[0]}</p>
+          <p className="text-xl m-4 font-extrabold">{title}</p>
+          <p className="text-base ml-4 mb-4 text-slate-500">
+            {manga.data.attributes.altTitles.slice(0, 3).map((altTitle, index) => (
+              <span key={index}>
+                {altTitle["ja-ro"] || altTitle["en"] || altTitle["pt-br"]} 
+                  { index< 2? ' ' : ''} 
+              </span>
+            ))}
+
+          </p>
+
+          <p className="text-base font-bold m-4">Sinopse de {title}</p>
+          <p className="text-base m-4">{description.split("--")[0].split("**")[0]}</p>
         </div>
       </div>
 
