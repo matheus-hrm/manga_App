@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={` ${roboto.variable}`}>
       <title>MangaReader</title>
       <link rel="icon" href="/favicon.png" type='icon'/>
-      <body className="bg-[#03001F]">
+      <body className="bg-[#03001F] text-white">
         <Suspense fallback={<Loading/>}/>
         {children}
       </body>
