@@ -17,7 +17,7 @@ async function fetchCoverFiles(idImage: string, idManga: string) {
     
     const fileName = response.data.data.attributes.fileName 
 
-    return `${UPLOADS_URL}/covers/${idManga}/${fileName}.256.jpg`
+    return `${UPLOADS_URL}/covers/${idManga}/${fileName}.512.jpg`
 }
 
 
