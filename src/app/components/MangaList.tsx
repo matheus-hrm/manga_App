@@ -15,7 +15,7 @@ export async function MangaList() {
 
         {manga?.map((manga) => (
           <li key={manga.name} className='relative group '>
-            <Link href={`/manga/${manga.id}`} className=' block'>
+            <Link href={`/${manga.id}`} className=' block'>
               <div className='min-h-full min-w-[150px] m-2'>
                 <Image
                   src={manga.image}
