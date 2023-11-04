@@ -7,11 +7,7 @@ import { hostname } from "os";
 await import("./src/env.mjs");
 const uploads = "uploads.mangadex.org";
 
-module.exports = {
-  typescript: {
-    ignoreBuidErrors: true,
-  }
-}
+
 
 /** @type {import("next").NextConfig} */
 const config = {
