@@ -3,7 +3,6 @@ import listMangas from '../api/listMangas';
 import Image from 'next/image';
 
 
-
 export async function MangaList() {
   let manga = [];
   manga = await listMangas();
@@ -18,8 +17,8 @@ export async function MangaList() {
               <Image
                 src={manga.image}
                 alt={manga.name}
-                width={100} // Largura máxima
-                height={150} // Altura máxima
+                width={100} 
+                height={150} 
                 className=' max-h-36 object-contain transform transition-transform group-hover:scale-110 overflow-hidden sm:w-32 md:w-40 lg:w-48 xl:w-56 2xl:w-64'
               />
               <p
