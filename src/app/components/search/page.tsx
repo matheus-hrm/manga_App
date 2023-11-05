@@ -1,36 +1,71 @@
 "use client"
+import Link from 'next/link';
 import React, { useState } from 'react';
+import { AiOutlineClose, AiOutlineLoading3Quarters } from 'react-icons/ai';
+
 
 const BASE_URL = 'https://api.mangadex.org';
 
 export default function Search() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const timeoutRef = React.useRef(null);
 
   const searchManga = async (query) => {
+    setLoading(true);
     const response = await fetch(`${BASE_URL}/manga?title=${query}`);
     const json = await response.json();
     const data = json.data;
 
     setResults(data);
+    setLoading(false);
   }
 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);  
+
+    if (timeoutRef.current !== null) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      if (value) {
+        searchManga(value);
+      }
+    }, 1000);
+  }
+
+
   return (
-    <div>
-      <h1>Search</h1>
-      <input type="text" onChange={(e) => {setQuery(e.target.value); searchManga(e.target.value);}} />
-      <h1>Resultados</h1>
-      <div className="flex flex-col justify-center items-center text-white bg-black h-screen w-screen overflow-scroll">
-        <ul className="flex flex-col space-y-4">
-          {results.map((result, index) => (
-            <li key={index}>
-              <h2>{result.attributes.title.en}</h2>
-              <h3>{result.attributes.description.pt}
-              </h3>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className='bg-[#03001A] flex flex-row mr-5'>
+      <input className='pr-48 bg-inherit border-transparent outline-none border-b-white border-2 focus:border-collapse transition duration-200 ease-in-out ' placeholder='Pesquise um mangá...' type="text" onChange={handleInputChange} />
+      {query && (
+        <>
+          <div className="bg-[#03001F] max-w-1/2  fixed top-0 left-0 w-full h-full text-white bg-opacity-80 flex justify-center items-center z-10 ">
+            <div className="flex-col p-5 rounded-md  max-w-lg w-full space-y-4 overflow-auto max-h-96 border-4 border-white bg-slate-950 m-32">
+              <div className='flex flex-row justify-between'>
+                <h1 className='text-2xl font-semibold'>Resultados</h1>
+                {loading && <AiOutlineLoading3Quarters className="animate-spin w-8 h-8" />}
+                <button onClick={() => setQuery('')} className='p-2 bg-slate-950'>
+                  <AiOutlineClose />
+                </button>
+              </div>
+              <ul className='text-base'>
+                {results.map((result, index) => (
+                  <li key={index} className='p-2 text-sm'>
+                    <Link href={`/${result.id}`}>
+                      <h2>{result.attributes.title.en}</h2>
+                      <h2>{result.attributes.title['pt-br']}</h2>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </>
+      )}
     </div>
-  );
+  ) 
 }

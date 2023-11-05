@@ -36,7 +36,7 @@ export default async function MangaPage({ params }) {
 
     const chaptersUnresolved = await fetch(`${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=pt-br&order[chapter]=desc&limit=500`);
     const chapters = await chaptersUnresolved.json();
-    console.log(chapters); 
+
   return (
     <>
       <Header />
