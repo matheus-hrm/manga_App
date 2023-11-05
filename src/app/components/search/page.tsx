@@ -10,9 +10,9 @@ export default function Search() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const timeoutRef = React.useRef(null);
+  const timeoutRef = React.useRef(null as unknown as ReturnType<typeof setTimeout>);
 
-  const searchManga = async (query) => {
+  const searchManga = async (query: string) => {
     setLoading(true);
     const response = await fetch(`${BASE_URL}/manga?title=${query}`);
     const json = await response.json();
@@ -22,7 +22,7 @@ export default function Search() {
     setLoading(false);
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);  
 
@@ -53,7 +53,7 @@ export default function Search() {
                 </button>
               </div>
               <ul className='text-base'>
-                {results.map((result, index) => (
+                {results.map((result: {id: string, attributes: {title: {[x: string]:string}}}, index) => (
                   <li key={index} className='p-2 text-sm'>
                     <Link href={`/${result.id}`}>
                       <h2>{result.attributes.title.en}</h2>
