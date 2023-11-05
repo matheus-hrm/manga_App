@@ -41,7 +41,7 @@ export default async function listMangas() {
         } else {
             name = item.attributes.title.en
         }
-        const imageUnresolved = item.relationships.find((item) => item.type === "cover_art").id || "sem imagem";
+        const imageUnresolved = item.relationships.find((item: {type: string}) => item.type === "cover_art").id || "sem imagem";
         const imageResolved = await fetchCoverFiles(imageUnresolved, item.id);
         mangaUnresolvedImage.push({ name , image: imageResolved, id: item.id });
     }
