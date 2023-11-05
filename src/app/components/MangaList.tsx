@@ -13,7 +13,7 @@ export async function MangaList() {
       {manga?.map((manga) => (
         <div key={manga.name} className='relative group m-2 flex flex-col items-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl'>
           <Link href={`/${manga.id}`} className=' block'>
-            <div className='overflow-hidden min-h-fit sm:w-fit'>
+            <div className='overflow-hidden min-h-fit sm:w-fit relative'>
               <Image
                 src={manga.image}
                 alt={manga.name}
@@ -22,7 +22,7 @@ export async function MangaList() {
                 className=' max-h-36 object-contain transform transition-transform group-hover:scale-110 overflow-hidden sm:w-32 md:w-40 lg:w-48 xl:w-56 2xl:w-64'
               />
               <p
-                className='top-0 left-0 absolute text-center p-2 hidden w-full h-full bg-black bg-opacity-10 group-hover:block group-hover:opacity-100 hover:scale-110 bg-gradient-to-b from-black to-transparent transition-all duration-150 ease-in-out '>
+                className='text-sm top-0 left-0 absolute text-center p-2 hidden w-full h-full  bg-opacity-10 group-hover:block group-hover:opacity-100 hover:scale-110 bg-gradient-to-b from-neutral-800 to-transparent transition-all duration-150 ease-in-out overflow-auto  sm:max-w-32 md:max-w-40 lg:max-w-48 xl:max-w-56 2xl:max-w-64'>
                 {manga.name}
               </p>
             </div>
