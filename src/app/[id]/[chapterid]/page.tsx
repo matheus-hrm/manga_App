@@ -1,26 +1,37 @@
-import Image from "next/image";
-type params = {
-  params : {
-    id: string,
-    chapterid: string
-  }
-}
-export default async function Chapters({params} : params) { 
-  
-  const chaptersUnresolved = await fetch(`https://api.mangadex.org/at-home/server/${params.chapterid}`);
-  const chapters = await chaptersUnresolved.json();
-  
+'use client';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import fetchChapters from './functionPage';
+
+// eslint-disable-next-line @next/next/no-async-client-component
+export default async function Chapters({ params }) {
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const Chapters = await fetchChapters(params);
+  console.log(Chapters);
+
+
+  setCurrentPage(0) = []
+
   return (
     <>
-      {chapters.chapter.data.map((filename: string) => {
-        const imageUrl = `${chapters.baseUrl}/data/${chapters.chapter.hash}/${filename}`;
-        return (
-          <div className="flex items-center justify-center p-4">
-            <Image src={imageUrl} alt={filename} key={filename} width={768} height={1024} />
-          </div>
-        )
-      })}
-      <a href={`/chapter/${parseInt(params.chapterid) + 1}`}>Próximo Capítulo</a>
+      <div className="flex items-center justify-center p-1">
+        <Image
+          src={Chapters.pagesUrl.url[currentPage]}
+          alt={`Page ${currentPage + 1}`}
+          key={currentPage}
+          width={768}
+          height={1024}
+        />
+      </div>
+      <div className="flex justify-center mt-4">
+        {currentPage > 0 && (
+          <button onClick={handlePreviousPage}>Página Anterior</button>
+        )}
+        {currentPage < Chapters.totalPages - 1 && (
+          <button onClick={handleNextPage}>Próxima Página</button>
+        )}
+      </div>
     </>
-  )
+  );
 }
