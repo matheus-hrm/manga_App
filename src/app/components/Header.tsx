@@ -5,9 +5,9 @@ import Search from './search/page'
 
 const Header = () => {
   return (
-    <header className="bg-[rgb(3,0,26)] p-8">
+    <header className="bg-[rgb(12,12,29)] p-6">
         <div className="container mx-auto flex justify-between items-center">
-            <Link href="/" className="sm:text-2xl md:text-4xl font-semibold text-white">mangás</Link>
+            <Link href="/" className=" hidden sm:block sm:text-2xl md:text-4xl font-semibold text-white">mangás</Link>
             <div className='flex flex-row space-x-2'>
             <Search />
             <NavBar/>
