@@ -1,1 +1,1 @@
-GET https://api.mangadex.org/manga?limit=10&order[followedCount]=desc
+GET https://api.mangadex.org/at-home/server/6f7f8462-5667-4629-89f5-b9e633a4968f

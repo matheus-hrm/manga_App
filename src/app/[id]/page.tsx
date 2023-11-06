@@ -7,9 +7,9 @@ import Footer from "../components/footer";
 import Link from "next/link";
 import { Key } from "react";
 type params = {
-  params : {
+  params: {
     id: string,
-    
+
   }
 }
 const BASE_URL = "https://api.mangadex.org";
@@ -21,12 +21,12 @@ async function fetchCoverFiles(idImage: string, idManga: string) {
   return `${UPLOADS_URL}/covers/${idManga}/${fileName}.256.jpg`;
 }
 
-export default async function MangaPage( {params}: params ) {
+export default async function MangaPage({ params }: params) {
   const res = await fetch(`${BASE_URL}/manga/${params.id}`);
   const manga = await res.json();
 
   const imageUnresolved =
-    manga.data.relationships.find((item: {type: string}) => item.type === "cover_art").id ||
+    manga.data.relationships.find((item: { type: string }) => item.type === "cover_art").id ||
     "sem imagem";
   const imageResolved = await fetchCoverFiles(imageUnresolved, params.id);
 
@@ -40,9 +40,9 @@ export default async function MangaPage( {params}: params ) {
     manga.data.attributes.title["ja-ro"] ||
     "sem título";
 
-  const chaptersUnresolved = await fetch(`${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=pt-br&order[chapter]=desc&limit=500` || `${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=en&order[chapter]=desc&limit=500`) 
+  const chaptersUnresolved = await fetch(`${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=pt-br&order[chapter]=desc&limit=500` || `${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=en&order[chapter]=desc&limit=500`)
   const chapters = await chaptersUnresolved.json();
-  
+
   return (
     <>
       <Header />
@@ -51,7 +51,7 @@ export default async function MangaPage( {params}: params ) {
           src={imageResolved}
           className="w-full h-[400px] object-cover blur-[5px] brightness-50
           absolute z-[-1]
-          "  
+          "
         />
       </div>
       <div className="mx-10 mt-4 flex justify-center overflow-hidden pt-4 text-white      ">
@@ -84,8 +84,8 @@ export default async function MangaPage( {params}: params ) {
           </div>
         </div>
         <div>
-          <div className="ml-5 h-[500px] w-[800px] rounded-sm bg-slate-800">
-            <p className="m-4 py-3 text-2xl font-extrabold">{title}</p>
+          <div className="ml-5 w-[800px] rounded-sm bg-slate-800 h-auto overflow-hidden">
+            <p className="m-4 pt-3 text-2xl font-extrabold">{title}</p>
             <p className="mx-4 text-base text-slate-500">
               {manga.data.attributes.altTitles
                 .slice(0, 3)
@@ -93,26 +93,22 @@ export default async function MangaPage( {params}: params ) {
                   <span key={index}>
                     {altTitle["ja-ro"] || altTitle["en"] || altTitle["pt-br"]}
                     {index < 2 ? " " : ""}
-                  </span>
+                  </span> || { title }
                 ))}
             </p>
-            <div>
-
-              <div className="flex flex-wrap mx-2 mt-1">
-                {manga.data.attributes.tags.map((item: { id: string; attributes: {name: {[x: string]:string}}}) => (
-                  <div key={item.id} className="m-2 bg-slate-700 rounded-sm p-2">
-                    <p className="text-sm">{item.attributes.name["pt-br"] || item.attributes.name["en"] || item.attributes.name["ja-ro"]}</p>
-                  </div>
-                ))}
-              </div>
+            <div className="flex flex-wrap mx-2 mt-1">
+              {manga.data.attributes.tags.map((item: { id: string; attributes: { name: { [x: string]: string } } }) => (
+                <div key={item.id} className="m-2 bg-slate-700 rounded-sm p-2">
+                  <p className="text-sm">{item.attributes.name["pt-br"] || item.attributes.name["en"] || item.attributes.name["ja-ro"]}</p>
+                </div>
+              ))}
             </div>
-
             <p className="m-4 text-base font-bold">Sinopse de {title}</p>
             <p className="m-4 text-base overflow-y-auto">
               {description.split("--")[0].split("**")[0]}
             </p>
-
           </div>
+
 
           <div className="ml-5 w-[800px] rounded-sm">
             <div className="mt-5 bg-slate-800 max-h-[400px] overflow-y-auto overflow-x-hidden" style={{ overflow: 'scroll', scrollbarWidth: 'thin', overflowX: 'hidden' }}>
@@ -138,7 +134,7 @@ export default async function MangaPage( {params}: params ) {
               <div className="flex items-center">
                 <p className="m-4 text-base font-bold">Capítulos de {title}</p>
               </div>
-              {chapters.data.map((chapter: {id: string; attributes: {chapter: string; title: string}}) => (
+              {chapters.data.map((chapter: { id: string; attributes: { chapter: string; title: string } }) => (
                 <div key={chapter.id} className="flex items-center border-[1px] mx-4 my-2 rounded-md ">
                   <Link href={`${params.id}/${chapter.id}`}>
                     <p className="mx-2 mt-2 text-base hover:text-[#776be0]">
