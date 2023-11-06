@@ -46,7 +46,15 @@ export default async function MangaPage( {params}: params ) {
   return (
     <>
       <Header />
-      <div className="mx-10 mt-4 flex justify-center overflow-hidden pt-4 text-white">
+      <div>
+        <img
+          src={imageResolved}
+          className="w-full h-[400px] object-cover blur-[5px] brightness-50
+          absolute z-[-1]
+          "  
+        />
+      </div>
+      <div className="mx-10 mt-4 flex justify-center overflow-hidden pt-4 text-white      ">
         <div className="">
           <img
             src={imageResolved}
@@ -77,7 +85,7 @@ export default async function MangaPage( {params}: params ) {
         </div>
         <div>
           <div className="ml-5 h-[500px] w-[800px] rounded-sm bg-slate-800">
-            <p className="m-4 py-3 text-xl font-extrabold">{title}</p>
+            <p className="m-4 py-3 text-2xl font-extrabold">{title}</p>
             <p className="mx-4 text-base text-slate-500">
               {manga.data.attributes.altTitles
                 .slice(0, 3)
