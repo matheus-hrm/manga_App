@@ -7,8 +7,7 @@ export default function Home() {
 
   return (
     <>
-
-      <div className=" text-white h-screen w-screen overflow-scroll">
+      <div className="text-white h-screen w-screen overflow-scroll">
         <Header />
         <h1 className='text-2xl p-5 ml-6 font-thin'>Mangás em destaque</h1>
         <MangaList />
