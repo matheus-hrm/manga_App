@@ -13,12 +13,12 @@ export default function login() {
             <input 
               type='text' 
               placeholder='Usuário' 
-              className='bg-inherit p-4 space-y-3 border-transparent outline-none  placeholder:text-black  focus:border-b-black border-2 transition duration-500 ease-in-out' 
+              className='bg-inherit text-black p-4 space-y-3 border-transparent outline-none  placeholder:text-black  focus:border-b-black border-2 transition duration-500 ease-in-out' 
             />
             <input 
               type='password' 
               placeholder='Senha' 
-              className='bg-inherit p-4 space-y-3 border-transparent outline-none  placeholder:text-black  focus:border-b-black border-2 transition duration-500 ease-in-out' 
+              className='bg-inherit text-black p-4 space-y-3 border-transparent outline-none  placeholder:text-black  focus:border-b-black border-2 transition duration-500 ease-in-out' 
             />
             <button 
               type='submit' 

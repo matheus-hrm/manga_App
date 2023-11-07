@@ -2,13 +2,15 @@ import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/footer";
 import Link from "next/link";
+import Image from "next/image";
+
 
 type params = {
   params: {
     id: string,
-
   }
 }
+
 const BASE_URL = "https://api.mangadex.org";
 const UPLOADS_URL = "https://uploads.mangadex.org";
 
@@ -44,22 +46,27 @@ export default async function MangaPage({ params }: params) {
     <>
       <Header />
       <div>
-        <img
+        <Image
           src={imageResolved}
           className="w-full h-[400px] object-cover blur-[5px] brightness-50
           absolute z-[-1]
           "
+          alt={manga.data.attributes.title.en}
+          width={1920}
+          height={400}
         />
       </div>
-      <div className="mx-10 mt-4 flex justify-center overflow-hidden pt-4 text-white      ">
-        <div className="">
-          <img
+      <div className="mx-10 mt-4 md:mx-10 flex flex-col lg:flex-row justify-center overflow-hidden pt-4 text-white">
+        <div className="w-full md:w-auto">
+          <Image
             src={imageResolved}
             alt={manga.data.attributes.title.en}
-            className="h-auto w-64 rounded-sm mt-4"
+            className="h-auto w-80 md:w-64 rounded-sm mt-4"
+            width={512}
+            height={400}
           />
-          <div className="w-1/2 justify-between">
-            <div className="mt-4 flex w-[256px] flex-col bg-slate-800">
+          <div className="w-full md:w-1/2 justify-between">
+            <div className="mt-4 sm:ml-5 lg:ml-0 flex w-full lg:w-[256px] flex-col bg-slate-800">
               <div className="m-2 p-2">
                 <div className="mb-2 flex justify-between">
                   <p className="text-sm">Status</p>{" "}
@@ -75,13 +82,12 @@ export default async function MangaPage({ params }: params) {
                   <p className="text-sm">Ano</p>{" "}
                   <p className="text-sm">{manga.data.attributes.year}</p>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
-        <div>
-          <div className="ml-5 w-[800px] rounded-sm bg-slate-800 h-auto overflow-hidden">
+        <div className="w-full md:w-auto">
+          <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm bg-slate-800 h-auto overflow-hidden">
             <p className="m-4 pt-3 text-2xl font-extrabold">{title}</p>
             <p className="mx-4 text-base text-slate-500">
               {manga.data.attributes.altTitles
@@ -107,8 +113,8 @@ export default async function MangaPage({ params }: params) {
           </div>
 
 
-          <div className="ml-5 w-[800px] rounded-sm">
-            <div className="mt-5 bg-slate-800 max-h-[400px] overflow-y-auto overflow-x-hidden" style={{ overflow: 'scroll', scrollbarWidth: 'thin', overflowX: 'hidden' }}>
+          <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm">
+            <div  className="mt-5 bg-slate-800 max-h-[400px] overflow-y-auto overflow-x-hidden" style={{ overflow: 'scroll', scrollbarWidth: 'thin', overflowX: 'hidden' }}>
               <style>
 
                 {`
@@ -132,12 +138,12 @@ export default async function MangaPage({ params }: params) {
                 <p className="m-4 text-base font-bold">Capítulos de {title}</p>
               </div>
               {chapters.data.map((chapter: { id: string; attributes: { chapter: string; title: string } }) => (
-                <div key={chapter.id} className="flex items-center border-[1px] mx-4 my-2 rounded-md ">
+                <div key={chapter.id} className="flex items-center border-[1px]  mx-4 my-2 rounded-md">
                   <Link href={`${params.id}/${chapter.id}`}>
-                    <p className="mx-2 mt-2 text-base hover:text-[#776be0]">
+                    <p className="mx-2 mt-2 text-base font-light hover:text-[#776be0]">
                       Capítulo {chapter.attributes.chapter}
                     </p>
-                    <p className="mx-2 mb-2 font-light text-xs">
+                    <p className="mx-2 mb-2 font-semibold text-xs">
                       {chapter.attributes.title}
                     </p>
                   </Link>
