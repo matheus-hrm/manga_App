@@ -1,11 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/footer";
 import Link from "next/link";
 import Image from "next/image";
+
 
 type params = {
   params: {
