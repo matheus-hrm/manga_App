@@ -47,18 +47,7 @@ type CoverResponse = {
 }
 
 async function fetchCoverFiles(idImage: string, idManga: string) {
-    const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`, {
-        params: {
-            
-        },
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-        }
-    })
+    const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`)
     if (response.data){
         const fileName: string = response.data.data.attributes.fileName 
         return `${UPLOADS_URL}/covers/${idManga}/${fileName}.512.jpg`
@@ -77,13 +66,6 @@ export default async function listMangas() {
             },
             limit: 8,
         },
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
-        }
     })
 
     const mangaUnresolvedImage = []
