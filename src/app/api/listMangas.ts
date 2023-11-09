@@ -49,13 +49,14 @@ type CoverResponse = {
 async function fetchCoverFiles(idImage: string, idManga: string) {
     const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`, {
         params: {
-            Headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
-            }
+            
+        },
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
         }
     })
     if (response.data){
@@ -75,13 +76,13 @@ export default async function listMangas() {
                 followedCount: 'desc'
             },
             limit: 8,
-            Headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token, Authorization'
-            }
+        },
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
         }
     })
 

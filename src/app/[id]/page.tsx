@@ -4,7 +4,6 @@ import Footer from "../components/footer";
 import Link from "next/link";
 import Image from "next/image";
 
-
 type params = {
   params: {
     id: string,
@@ -14,6 +13,7 @@ type params = {
 type attributes = {
   fileName: string
 }
+
 type CoverData = {
   attributes: attributes
   data: {
@@ -117,7 +117,7 @@ async function fetchCoverFiles(idImage: string, idManga: string) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
       'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token, Accept, Authorization, X-Requested-With'
-  }
+    }
   })
   if (response.data){
       const fileName: string = response.data.data.attributes.fileName 
@@ -139,7 +139,7 @@ export default async function MangaPage({ params }: params) {
     },
   });
   const manga = await res.json() as MangaResponse;
-
+  console.log(manga);
   const coverArtRelationship = manga.data.relationships.find((item: {type: string}) => item.type === "cover_art");
   const imageUnresolved: string = coverArtRelationship ? coverArtRelationship.id || ("sem imagem") : ("sem imagem");
   const imageResolved = await fetchCoverFiles(imageUnresolved, params.id);
