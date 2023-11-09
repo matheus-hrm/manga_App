@@ -42,7 +42,7 @@ export default async function GetChapterArray(params : params) {
 
   if(data){
     const pagesUrl: Chapter = data.chapter.data.map((fileName: string, index: number) => ({
-      url:`${data.baseUrl}/dataSaver/${data.chapter.hash}/${fileName}`,
+      url:`${data.baseUrl}/data/${data.chapter.hash}/${fileName}`,
       pageIndex: index,
     }));
     return pagesUrl;

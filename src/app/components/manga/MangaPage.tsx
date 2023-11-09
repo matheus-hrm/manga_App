@@ -13,6 +13,8 @@ export default function MangaPage (img : Images) {
   const totalPages = img.images.length;
 
   const imageUrl = img.images[currentPage];
+
+  console.log(imageUrl)
   
   return (
     <>
@@ -29,7 +31,7 @@ export default function MangaPage (img : Images) {
               height: "100%",
             }}
           />
-      }
+        }
       </div>
       <div className="mt-4 flex justify-center">
         {currentPage > 0 && (
