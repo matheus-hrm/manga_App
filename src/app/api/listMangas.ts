@@ -2,28 +2,65 @@ const BASE_URL = "https://api.mangadex.org"
 const UPLOADS_URL = "https://uploads.mangadex.org"
 import axios from 'axios'
 
-type Manga = {
-    name: string
-    image: string
+type attributes = {
+    fileName: string
+}
+type CoverData = {
+    attributes: attributes
+    data: {
+        id: string
+        type: string
+        attributes: attributes;
+        relationships: [
+            {
+                id: string
+                type: string
+            }
+        ]
+    }
 }
 
-type MangaUnresolvedImage = {
-    name: string
-    image: string
+type MangaData = {
+    id: string
+    type: string
+    attributes: {
+        title: {
+            en: string
+            "ja-ro": string
+        }
+    }
+    relationships: [
+        {
+            id: string
+            type: string
+        }
+    ]
+}
+
+type MangaResponse = {
+    data: MangaData[]
+}
+
+
+type CoverResponse = {
+    data: CoverData  
 }
 
 async function fetchCoverFiles(idImage: string, idManga: string) {
-    const response = await axios.get(`${BASE_URL}/cover/${idImage}`)
-    
-    const fileName = response.data.data.attributes.fileName 
+    const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`)
+    if (response.data){
+        const fileName: string = response.data.data.attributes.fileName 
+        return `${UPLOADS_URL}/covers/${idManga}/${fileName}.512.jpg`
+    } else {
+        throw new Error("Não foi possível obter a imagem")
+    }
 
-    return `${UPLOADS_URL}/covers/${idManga}/${fileName}.512.jpg`
 }
 
 
 export default async function listMangas() {
 
-    const response = await axios.get(`${BASE_URL}/manga`, {
+    const response = await axios.get<MangaResponse>(`${BASE_URL}/manga`, {
         params: {
             order: {
                 followedCount: 'desc'
@@ -41,7 +78,8 @@ export default async function listMangas() {
         } else {
             name = item.attributes.title.en
         }
-        const imageUnresolved = item.relationships.find((item: {type: string}) => item.type === "cover_art").id || "sem imagem";
+        const coverArtRelationship = item.relationships.find((item: {type: string}) => item.type === "cover_art");
+        const imageUnresolved: string = coverArtRelationship ? coverArtRelationship.id || ("sem imagem") : ("sem imagem");
         const imageResolved = await fetchCoverFiles(imageUnresolved, item.id);
         mangaUnresolvedImage.push({ name , image: imageResolved, id: item.id });
     }

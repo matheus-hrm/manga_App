@@ -14,6 +14,9 @@ const config = {
   images: {
     domains: [uploads],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default config;

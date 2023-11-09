@@ -3,90 +3,115 @@
 import React from "react";
 import Image from "next/image";
 import { useState } from "react";
-import fetchChapters from "./functionPage";
 import useSWR from "swr";
 
 type params = {
   params: {
     chapterid: string;
     id: string;
-  };
+  }
 };
 
 type ChapterData = {
-  chapter: {
-    data: {
+    chapter: {
       hash: string;
-      pages: string[];
+      data: [
+        fileName: string,
+      ]
+      dataSaver: [
+        fileName: string,
+      ]
     };
-  };
-  baseUrl: string;
-};
+    baseUrl: string;
+} | undefined;
 
-type Chapter = { 
+type Chapter = {
   url: string;
   pageIndex: number;
-};
+  lenght?: number;
+}[];
+
+
+type response = {
+  data: ChapterData;
+  error: string;
+  isLoading: boolean;
+}
 
 function fetcher(url: string) {
   return fetch(url).then((res) => res.json());
 }
 
-function getChapterArray(params : params) {
-  const { data, error, isLoading } = useSWR(
-    `https://api.mangadex.org/at-home/server/${params.chapterid}`,
+function GetChapterArray(params : params) {
+  const { data, error, isLoading } = useSWR<response>(
+    `https://api.mangadex.org/at-home/server/${params.params.chapterid}`,
     fetcher,
-  );
+  ) as {data: ChapterData | undefined ; error: string; isLoading: boolean};
 
+ 
   if (isLoading) return <div>Carregando...</div>;
   if (error) return <div>Erro ao carregar</div>;
 
-  
-  const pagesUrl = data.chapter.data.map((fileName, index) => ({
-    url:`${data.baseUrl}/data/${data.chapter.hash}/${fileName}`,
-    pageIndex: index,
-  }));
-
-  return {pagesUrl};
+  if(data){
+    const pagesUrl: Chapter = data.chapter.data.map((fileName: string, index: number) => ({
+      url:`${data.baseUrl}/data/${data.chapter.hash}/${fileName}`,
+      pageIndex: index,
+    }));
+    
+    return pagesUrl;
+  }
 }
 
 export default function Chapters({ params }: params) {
+
   const [currentPage, setCurrentPage] = useState(0);
-
-  const { pagesUrl } = getChapterArray(params);
-
+  const pagesUrl = GetChapterArray({params}) as Chapter | undefined;
+  let imageUrl: string | undefined;
+  let totalPages: number | undefined;
   if (!pagesUrl) return <div>Carregando...</div>;
 
-  const totalPages: number = pagesUrl.length;
+  if (pagesUrl?.[currentPage]) {
+    imageUrl = pagesUrl[currentPage]?.url;
+    totalPages = pagesUrl.length;
+  }
+
   return (
     <>
+    <div className=" bg-black">
+
       <div className="flex items-center justify-center p-1">
-        <Image
-          src={pagesUrl[currentPage].url}
-          alt={`Page ${currentPage + 1}`}
-          key={currentPage}
-          width={768}
-          height={1024}
-          
-        />
+        {imageUrl && 
+          <Image
+          src={imageUrl}
+            alt={`Page ${currentPage + 1}`}
+            key={currentPage}
+            width={512}
+            height={1080}
+            style={{
+              width: "auto",
+              height: "100%",
+            }}
+          />
+      }
       </div>
       <div className="mt-4 flex justify-center">
         {currentPage > 0 && (
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
-            className="m-2 rounded-lg bg-slate-500 p-3"
+            className="m-2 rounded-lg bg-slate-950 p-3"
           >
             Página Anterior
           </button>
         )}
-        {currentPage < totalPages - 1 && (
+        {totalPages && currentPage < totalPages - 1 && (
           <button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            className="m-2 rounded-lg bg-slate-500 p-3"
+          onClick={() => setCurrentPage(currentPage + 1)}
+          className="m-2 rounded-lg bg-slate-950 p-3"
           >
-            Próxima Página
+          Próxima Página
           </button>
-        )}
+          )}
+      </div>
       </div>
     </>
   );

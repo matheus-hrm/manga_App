@@ -3,19 +3,70 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { AiOutlineClose, AiOutlineLoading3Quarters } from 'react-icons/ai';
 
+type MangaData = {
+  id: string
+  type: string
+  attributes: {
+    title: {
+        "pt-br": string
+        en: string
+        "ja-ro": string
+    }
+    altTitles: [
+        {
+          en: string
+          "ja-ro": string
+          "pt-br": string
+        }
+    ]
+    description: {
+      en: string
+      "pt-br": string
+    }
+    publicationDemographic: string
+    status : string
+    year: number
+    contentRating: string
+    tags: [
+      {
+        id: string
+        type: string
+        attributes: {
+          name: {
+            en: string
+            "ja-ro": string
+            "pt-br": string
+          }
+        }
+      }
+    ]
+    version: number
+  }
+  relationships: [
+    {
+      id: string
+      type: string
+    }
+  ]
+  links: {
+    self: string
+  }
+  createdAt: string
+  updatedAt: string
 
+}
 const BASE_URL = 'https://api.mangadex.org';
 
 export default function Search() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<MangaData[]>([]);
   const [loading, setLoading] = useState(false);
-  const timeoutRef = React.useRef(null as unknown as ReturnType<typeof setTimeout>);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null as unknown as ReturnType<typeof setTimeout>);
 
   const searchManga = async (query: string) => {
     setLoading(true);
     const response = await fetch(`${BASE_URL}/manga?title=${query}`);
-    const json = await response.json();
+    const json = await response.json() as {data: MangaData[]};
     const data = json.data;
 
     setResults(data);
@@ -32,7 +83,11 @@ export default function Search() {
 
     timeoutRef.current = setTimeout(() => {
       if (value) {
-        searchManga(value);
+        searchManga(value).then(() => {
+          timeoutRef.current = null;
+        }).catch((err) => {
+          console.error(err);
+        })
       }
     }, 1000);
   }
@@ -81,7 +136,7 @@ export default function Search() {
               </button>
             </div>
             <ul className='text-base'>
-              {results.map((result: {id: string, attributes: {title: {[x: string]:string}}}, index) => (
+              {results.map((result: {id: string, attributes: {title: Record<"pt-br" | "en", string>}}, index) => (
                 <li key={index} className='p-2 text-sm'>
                   <Link href={`/${result.id}`}>
                     <h2>{result.attributes.title.en}</h2>

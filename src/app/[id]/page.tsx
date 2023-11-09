@@ -11,36 +11,135 @@ type params = {
   }
 }
 
+type attributes = {
+  fileName: string
+}
+type CoverData = {
+  attributes: attributes
+  data: {
+      id: string
+      type: string
+      attributes: attributes;
+      relationships: [
+          {
+              id: string
+              type: string
+          }
+      ]
+  }
+}
+
+type MangaData = {
+  id: string
+  type: string
+  attributes: {
+    title: {
+        "pt-br": string
+        en: string
+        "ja-ro": string
+    }
+    altTitles: [
+        {
+          en: string
+          "ja-ro": string
+          "pt-br": string
+        }
+    ]
+    description: {
+      en: string
+      "pt-br": string
+    }
+    publicationDemographic: string
+    status : string
+    year: number
+    contentRating: string
+    tags: [
+      {
+        id: string
+        type: string
+        attributes: {
+          name: {
+            en: string
+            "ja-ro": string
+            "pt-br": string
+          }
+        }
+        relationships: []
+      }
+    ]
+  }
+  relationships: [
+    {
+      id: string
+      type: string
+    }
+  ]
+}
+
+type ChapterData = {
+  id: string
+  type: string
+  attributes: {
+    chapter: string
+    title: string
+    volume: string
+    translatedLanguage: string
+    hash: string
+    data: string[]
+    publishAt: string
+    createdAt: string
+    updatedAt: string
+  }
+  relationships: [
+    {
+      id: string
+      type: string
+    }
+  ]
+}
+type MangaResponse = {
+  data: MangaData
+}
+
+
+type CoverResponse = {
+  data: CoverData  
+}
+
 const BASE_URL = "https://api.mangadex.org";
 const UPLOADS_URL = "https://uploads.mangadex.org";
 
 async function fetchCoverFiles(idImage: string, idManga: string) {
-  const response = await axios.get(`${BASE_URL}/cover/${idImage}`);
-  const fileName = response.data.data.attributes.fileName;
-  return `${UPLOADS_URL}/covers/${idManga}/${fileName}.256.jpg`;
+  const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`)
+  if (response.data){
+      const fileName: string = response.data.data.attributes.fileName 
+      return `${UPLOADS_URL}/covers/${idManga}/${fileName}.512.jpg`
+  } else {
+      throw new Error("Não foi possível obter a imagem")
+  }
+
 }
 
 export default async function MangaPage({ params }: params) {
   const res = await fetch(`${BASE_URL}/manga/${params.id}`);
-  const manga = await res.json();
+  const manga = await res.json() as MangaResponse;
 
-  const imageUnresolved =
-    manga.data.relationships.find((item: { type: string }) => item.type === "cover_art").id ||
-    "sem imagem";
+  const coverArtRelationship = manga.data.relationships.find((item: {type: string}) => item.type === "cover_art");
+  const imageUnresolved: string = coverArtRelationship ? coverArtRelationship.id || ("sem imagem") : ("sem imagem");
   const imageResolved = await fetchCoverFiles(imageUnresolved, params.id);
 
   const description =
     manga.data.attributes.description["pt-br"] ||
-    manga.data.attributes.description["en"] ||
+    manga.data.attributes.description.en ||
     "sem descrição";
   const title =
     manga.data.attributes.title["pt-br"] ||
-    manga.data.attributes.title["en"] ||
+    manga.data.attributes.title.en ||
     manga.data.attributes.title["ja-ro"] ||
     "sem título";
 
   const chaptersUnresolved = await fetch(`${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=pt-br&order[chapter]=desc&limit=500` || `${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=en&order[chapter]=desc&limit=500`)
-  const chapters = await chaptersUnresolved.json();
+  const chapters = await chaptersUnresolved.json() as { data: ChapterData[] };
 
   return (
     <>
@@ -92,47 +191,39 @@ export default async function MangaPage({ params }: params) {
             <p className="mx-4 text-base text-slate-500">
               {manga.data.attributes.altTitles
                 .slice(0, 3)
-                .map((altTitle: { [x: string]: string; }, index: number) => (
+                .map((altTitle: Record<"ja-ro" | "en" | "pt-br", string>, index: number) => (
                   <span key={index}>
-                    {altTitle["ja-ro"] || altTitle["en"] || altTitle["pt-br"]}
+                    {altTitle["ja-ro"] || altTitle.en || altTitle["pt-br"]}
                     {index < 2 ? " " : ""}
                   </span> || { title }
                 ))}
             </p>
             <div className="flex flex-wrap mx-2 mt-1">
-              {manga.data.attributes.tags.map((item: { id: string; attributes: { name: { [x: string]: string } } }) => (
+              {manga.data.attributes.tags.map((item: { id: string; attributes: { name: Record<"pt-br" | "en"| "ja-ro" ,string> } }) => (
                 <div key={item.id} className="m-2 bg-slate-700 rounded-sm p-2">
-                  <p className="text-sm">{item.attributes.name["pt-br"] || item.attributes.name["en"] || item.attributes.name["ja-ro"]}</p>
+                  <p className="text-sm">{item.attributes.name["pt-br"] || item.attributes.name.en || item.attributes.name["ja-ro"]}</p>
                 </div>
               ))}
             </div>
             <p className="m-4 text-base font-bold">Sinopse de {title}</p>
             <p className="m-4 text-base overflow-y-auto">
-              {description.split("--")[0].split("**")[0]}
+              {description?.split("--")[0]?.split("**")[0]}
             </p>
           </div>
-
-
           <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm">
             <div  className="mt-5 bg-slate-800 max-h-[400px] overflow-y-auto overflow-x-hidden" style={{ overflow: 'scroll', scrollbarWidth: 'thin', overflowX: 'hidden' }}>
               <style>
-
                 {`
-       
                   ::-webkit-scrollbar {
                     width: 10px;
                   }
-        
                   ::-webkit-scrollbar-thumb {
                     background: #888;
                   }
-
-        
                   ::-webkit-scrollbar-thumb:hover {
                     background: #555;
                   }
                 `}
-
               </style>
               <div className="flex items-center">
                 <p className="m-4 text-base font-bold">Capítulos de {title}</p>
@@ -151,15 +242,8 @@ export default async function MangaPage({ params }: params) {
               ))}
             </div>
           </div>
-
-
         </div>
-
       </div>
-
-
-
-
       <Footer />
     </>
   );
