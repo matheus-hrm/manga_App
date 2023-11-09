@@ -1,4 +1,4 @@
-import GET from "./api/route";
+import GetChapterArray from "./api/fetchChapters";
 import MangaPage from "~/app/components/manga/MangaPage";
 
 type params = {
@@ -15,9 +15,8 @@ type Chapter = {
 }[];
 
 async function GetChapters({ params }: params) {
-  const response = await GET({params})
-  const data = await response?.json() as Chapter | undefined;
-  return data;
+  const response = await GetChapterArray({params}) as Chapter;
+  return response;
 }
 
 export default async function Chapters({ params }: params) {
