@@ -117,13 +117,12 @@ async function fetchCoverFiles(idImage: string, idManga: string) {
   } else {
       throw new Error("Não foi possível obter a imagem")
   }
-
 }
 
 export default async function MangaPage({ params }: params) {
   const res = await fetch(`${BASE_URL}/manga/${params.id}`);
   const manga = await res.json() as MangaResponse;
-  console.log(manga);
+  
   const coverArtRelationship = manga.data.relationships.find((item: {type: string}) => item.type === "cover_art");
   const imageUnresolved: string = coverArtRelationship ? coverArtRelationship.id || ("sem imagem") : ("sem imagem");
   const imageResolved = await fetchCoverFiles(imageUnresolved, params.id);

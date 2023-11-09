@@ -1,4 +1,4 @@
-import useSWR from "swr";
+
 
 type params = {
   params: {
@@ -27,27 +27,19 @@ type Chapter = {
 }[];
 
 
-type response = {
-  data: ChapterData;
-}
-
-function fetcher(url: string) {
-  return fetch(url).then((res) => res.json());
-}
-
-export default function GetChapterArray(params : params) {
-  const { data } = useSWR<response>(
-    `https://api.mangadex.org/at-home/server/${params.params.chapterid}`,
-    fetcher,
-  ) as {data: ChapterData | undefined ; error: string; isLoading: boolean};
-
+export default async function GetChapterArray(params : params) {
+  const response = await fetch(
+    `https://api.mangadex.org/at-home/server/${params.params.chapterid}`
+  )
+  const data = await response.json() as ChapterData;
+  
 
   if(data){
     const pagesUrl: Chapter = data.chapter.data.map((fileName: string, index: number) => ({
-      url:`${data.baseUrl}/data/${data.chapter.hash}/${fileName}`,
+      url:`${data.baseUrl}/dataSaver/${data.chapter.hash}/${fileName}`,
       pageIndex: index,
     }));
-    
     return pagesUrl;
   }
 }
+

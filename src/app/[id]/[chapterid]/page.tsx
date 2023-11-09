@@ -1,9 +1,5 @@
-
-"use client";
-import React from "react";
-import Image from "next/image";
-import { useState } from "react";
-import GetChapterArray from "./fetchChapters";
+import GET from "./api/route";
+import MangaPage from "~/app/components/manga/MangaPage";
 
 type params = {
   params: {
@@ -12,63 +8,33 @@ type params = {
   }
 };
 
-
 type Chapter = {
   url: string;
   pageIndex: number;
-  lenght?: number;
+  lenght: number;
 }[];
 
+async function GetChapters({ params }: params) {
+  const response = await GET({params})
+  const data = await response?.json() as Chapter | undefined;
+  return data;
+}
 
-export default function Chapters({ params }: params) {
+export default async function Chapters({ params }: params) {
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const pagesUrl = GetChapterArray({params}) as Chapter | undefined;
-  let imageUrl: string | undefined;
-  let totalPages: number | undefined;
+  const pagesUrl = await GetChapters({ params });
+
   if (!pagesUrl) return <div>Carregando...</div>;
 
-  if (pagesUrl?.[currentPage]) {
-    imageUrl = pagesUrl[currentPage]?.url;
-    totalPages = pagesUrl.length;
-  }
-
+  const images = pagesUrl.map((page) => { 
+    return page.url
+  });  
+  
   return (
     <>
-     
-      <div className="flex items-center justify-center p-1">
-        {imageUrl && 
-          <Image
-          src={imageUrl}
-            alt={`Page ${currentPage + 1}`}
-            key={currentPage}
-            width={512}
-            height={1080}
-            style={{
-              width: "auto",
-              height: "100%",
-            }}
-          />
-      }
-      </div>
-      <div className="mt-4 flex justify-center">
-        {currentPage > 0 && (
-          <button
-            onClick={() => setCurrentPage(currentPage - 1)}
-            className="m-2 rounded-lg bg-slate-950 p-3"
-          >
-            Página Anterior
-          </button>
-        )}
-        {totalPages && currentPage < totalPages - 1 && (
-          <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          className="m-2 rounded-lg bg-slate-950 p-3"
-          >
-          Próxima Página
-          </button>
-          )}
-      </div>
+    {images &&
+     <MangaPage images={images} />
+    }
     </>
   );
 }
