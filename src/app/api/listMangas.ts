@@ -47,7 +47,17 @@ type CoverResponse = {
 }
 
 async function fetchCoverFiles(idImage: string, idManga: string) {
-    const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`)
+    const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`, {
+        params: {
+            Headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
+            }
+        }
+    })
     if (response.data){
         const fileName: string = response.data.data.attributes.fileName 
         return `${UPLOADS_URL}/covers/${idManga}/${fileName}.512.jpg`
@@ -59,16 +69,21 @@ async function fetchCoverFiles(idImage: string, idManga: string) {
 
 
 export default async function listMangas() {
-
     const response = await axios.get<MangaResponse>(`${BASE_URL}/manga`, {
         params: {
             order: {
                 followedCount: 'desc'
             },
-            limit: 8
+            limit: 8,
+            Headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token, Authorization'
+            }
         }
     })
- 
 
     const mangaUnresolvedImage = []
     for (const item of response.data.data) {
@@ -84,8 +99,6 @@ export default async function listMangas() {
         mangaUnresolvedImage.push({ name , image: imageResolved, id: item.id });
     }
 
-
     return mangaUnresolvedImage
-
 }
 

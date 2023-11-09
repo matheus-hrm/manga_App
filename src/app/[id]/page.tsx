@@ -110,7 +110,15 @@ const BASE_URL = "https://api.mangadex.org";
 const UPLOADS_URL = "https://uploads.mangadex.org";
 
 async function fetchCoverFiles(idImage: string, idManga: string) {
-  const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`)
+  const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token, Accept, Authorization, X-Requested-With'
+  }
+  })
   if (response.data){
       const fileName: string = response.data.data.attributes.fileName 
       return `${UPLOADS_URL}/covers/${idManga}/${fileName}.512.jpg`
@@ -121,7 +129,15 @@ async function fetchCoverFiles(idImage: string, idManga: string) {
 }
 
 export default async function MangaPage({ params }: params) {
-  const res = await fetch(`${BASE_URL}/manga/${params.id}`);
+  const res = await fetch(`${BASE_URL}/manga/${params.id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Accesss-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    },
+  });
   const manga = await res.json() as MangaResponse;
 
   const coverArtRelationship = manga.data.relationships.find((item: {type: string}) => item.type === "cover_art");
@@ -138,7 +154,16 @@ export default async function MangaPage({ params }: params) {
     manga.data.attributes.title["ja-ro"] ||
     "sem título";
 
-  const chaptersUnresolved = await fetch(`${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=pt-br&order[chapter]=desc&limit=500` || `${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=en&order[chapter]=desc&limit=500`)
+  const chaptersUnresolved = await fetch(`${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=pt-br&order[chapter]=desc&limit=500` 
+  || `${BASE_URL}/manga/${params.id}/feed?translatedLanguage[]=en&order[chapter]=desc&limit=500`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Accesss-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    },
+  })
   const chapters = await chaptersUnresolved.json() as { data: ChapterData[] };
 
   return (

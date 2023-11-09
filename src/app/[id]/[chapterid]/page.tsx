@@ -78,7 +78,6 @@ export default function Chapters({ params }: params) {
   return (
     <>
     <div className=" bg-black">
-
       <div className="flex items-center justify-center p-1">
         {imageUrl && 
           <Image

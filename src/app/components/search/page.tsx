@@ -65,7 +65,15 @@ export default function Search() {
 
   const searchManga = async (query: string) => {
     setLoading(true);
-    const response = await fetch(`${BASE_URL}/manga?title=${query}`);
+    const response = await fetch(`${BASE_URL}/manga?title=${query}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Accesss-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+      },
+    });
     const json = await response.json() as {data: MangaData[]};
     const data = json.data;
 
