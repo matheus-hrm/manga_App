@@ -27,6 +27,12 @@ type Chapter = {
 export default async function GET(params: params) {
   const response = await fetch(
     `https://api.mangadex.org/at-home/server/${params.params.chapterid}`,
+    {
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+    }
   );
   const data = await response.json() as ChapterData;
 
