@@ -39,7 +39,15 @@ type response = {
 }
 
 function fetcher(url: string) {
-  return fetch(url).then((res) => res.json());
+  return fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token, Authorization',
+    }
+  }).then((res) => res.json());
 }
 
 function GetChapterArray(params : params) {
