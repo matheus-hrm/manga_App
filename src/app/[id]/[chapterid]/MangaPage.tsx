@@ -1,6 +1,8 @@
 'use client'
 import Image from "next/image";
 import { useState } from "react";
+import Header from "~/app/components/Header";
+import Footer from "~/app/components/footer";
 
 type Images = {
   images: string[];
@@ -18,6 +20,7 @@ export default function MangaPage (img : Images) {
   
   return (
     <>
+    <Header />
     <div className="flex items-center justify-center p-1">
         {imageUrl && 
           <Image
@@ -51,6 +54,7 @@ export default function MangaPage (img : Images) {
           </button>
           )}
       </div>
+      <Footer />
     </>
   )
 }

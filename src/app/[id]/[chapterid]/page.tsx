@@ -1,6 +1,6 @@
 import Header from "~/app/components/Header";
 import GetChapterArray from "./api/fetchChapters";
-import MangaPage from "~/app/components/manga/MangaPage";
+import MangaPage from "~/app/[id]/[chapterid]/MangaPage";
 
 type params = {
   params: {

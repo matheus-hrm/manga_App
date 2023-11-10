@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import NavBar from './NavBar'
-import Search from './search/page'
+import SearchBar from './SearchBar'
 
 const Header = () => {
   return (
@@ -9,7 +9,7 @@ const Header = () => {
         <div className="container mx-auto flex justify-between items-center">
             <Link href="/" className=" hidden sm:block sm:text-2xl md:text-4xl font-semibold text-white">mangás</Link>
             <div className='flex flex-row space-x-2'>
-            <Search />
+            <SearchBar />
             <NavBar/>
             </div>
         </div>
