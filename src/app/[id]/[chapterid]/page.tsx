@@ -1,3 +1,4 @@
+import Header from "~/app/components/Header";
 import GetChapterArray from "./api/fetchChapters";
 import MangaPage from "~/app/components/manga/MangaPage";
 
@@ -31,6 +32,7 @@ export default async function Chapters({ params }: params) {
   
   return (
     <>
+    <Header />
     {images &&
      <MangaPage images={images} />
     }

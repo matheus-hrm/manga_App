@@ -173,7 +173,7 @@ export default async function MangaPage({ params }: params) {
             height={400}
           />
           <div className="w-full md:w-1/2 justify-between">
-            <div className="mt-4 sm:ml-5 lg:ml-0 flex w-full lg:w-[256px] flex-col bg-slate-800">
+            <div className="mt-4 sm:ml-5 lg:ml-0 flex w-full lg:w-[256px] flex-col bg-slate-800 ">
               <div className="m-2 p-2">
                 <div className="mb-2 flex justify-between">
                   <p className="text-sm">Status</p>{" "}
@@ -194,7 +194,7 @@ export default async function MangaPage({ params }: params) {
           </div>
         </div>
         <div className="w-full md:w-auto">
-          <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm bg-slate-800 h-auto overflow-hidden">
+          <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm bg-slate-800 h-auto overflow-hidden ">
             <p className="m-4 pt-3 text-2xl font-extrabold">{title}</p>
             <p className="mx-4 text-base text-slate-500">
               {manga.data.attributes.altTitles
@@ -218,7 +218,7 @@ export default async function MangaPage({ params }: params) {
               {description?.split("--")[0]?.split("**")[0]}
             </p>
           </div>
-          <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm">
+          <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm ">
             <div  className="mt-5 bg-slate-800 max-h-[400px] overflow-y-auto overflow-x-hidden" style={{ overflow: 'scroll', scrollbarWidth: 'thin', overflowX: 'hidden' }}>
               <style>
                 {`
