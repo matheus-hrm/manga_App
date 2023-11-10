@@ -20,7 +20,6 @@ export default function MangaPage (img : Images) {
   
   return (
     <>
-    <Header />
     <div className="flex items-center justify-center p-1">
         {imageUrl && 
           <Image

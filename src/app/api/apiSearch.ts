@@ -26,7 +26,7 @@ export default async function searchManga(query: string) {
   });
 
   const data = (await response.json()) as MangaData;
-
+  
   if (data) {
     const mangaData = data.data.map((manga) => ({
       id: manga.id,
