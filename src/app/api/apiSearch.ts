@@ -1,3 +1,4 @@
+import axios from "axios";
 
 const BASE_URL = "https://api.mangadex.org";
 type MangaData = {
@@ -18,14 +19,15 @@ type MangaData = {
 
 
 export default async function searchManga(query: string) {
-  const response = await fetch(`${BASE_URL}/manga?title=${query}`, {
+  const response = await axios.get<MangaData>(`${BASE_URL}/manga?title=${query}`, 
+  {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
   });
 
-  const data = (await response.json()) as MangaData;
+  const data = response.data;
   
   if (data) {
     const mangaData = data.data.map((manga) => ({
