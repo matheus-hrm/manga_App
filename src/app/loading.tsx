@@ -1,15 +1,14 @@
-import React from 'react'
-import Header from './components/Header'
-import Footer from './components/footer'
+import Header from "./components/Header";
+import { MangaList } from "./components/MangaList";
+import Footer from "./components/footer";
 
-const Loading = () => {
+export default function Loading() {
+
   return (
     <>
-    <Header/>
-    <h1 className='flex items-center justify-center text-3xl text-white '>Carregando...</h1>
-    <Footer/>
+    <Header />
+    <MangaList />
+    <Footer />
     </>
   )
 }
-
-export default Loading
