@@ -5,15 +5,14 @@
  */
 await import("./src/env.mjs");
 const uploads = "uploads.mangadex.org";
-
+const devpics = "avatars.githubusercontent.com";
 
 
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: [uploads],
+    domains: [uploads,devpics],
   },
-  
 };
 
 export default config;

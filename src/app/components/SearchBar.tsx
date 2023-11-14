@@ -25,7 +25,7 @@ export function SuspenseResults() {
 }
 
 export default function SearchBar() {
-  const [query, setQuery] = useState("");
+  const [, setQuery] = useState("");
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [delayedQuery, setDelayedQuery] = useState("");
 

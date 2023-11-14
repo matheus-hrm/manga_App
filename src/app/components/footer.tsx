@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -15,13 +16,13 @@ export default function Footer() {
           <div className="flex flex-row space-x-4 justify-center items-center">
             <Link target="_blank"  href="https://github.com/matheus-hrm">
               <div className=" bg-slate-800 px-5 py-2 rounded-2xl flex justify-between items-center flex-row">
-                <img src='https://avatars.githubusercontent.com/u/49960367?v=4' alt="Matheus Henrique" className="rounded-full w-8 h-8" />
+                <Image src='https://avatars.githubusercontent.com/u/49960367?v=4' alt="Matheus Henrique" className="rounded-full w-8 h-8" width={56} height={56}/>
                 <h1 className="text-white text-sm px-2">matheus</h1>
               </div>
             </Link>
             <Link target="_blank"  href="https://github.com/rafaelalmeidaV">
               <div className=" bg-slate-800 px-7 py-2 rounded-2xl flex  flex-row justify-between items-center">
-                <img src='https://avatars.githubusercontent.com/u/104868359?v=4' alt="Rafael Almeida" className="rounded-full w-8 h-8" />
+                <Image src='https://avatars.githubusercontent.com/u/104868359?v=4' alt="Rafael Almeida" className="rounded-full w-8 h-8" width={56} height={56}/>
                 <h1 className="text-white text-sm px-2">rafael </h1>
               </div>
             </Link>

@@ -97,10 +97,10 @@ type ChapterData = {
     }
   ]
 }
+
 type MangaResponse = {
   data: MangaData
 }
-
 
 type CoverResponse = {
   data: CoverData  
@@ -218,8 +218,8 @@ export default async function MangaPage({ params }: params) {
               {description?.split("--")[0]?.split("**")[0]}
             </p>
           </div>
-          <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm ">
-            <div  className="mt-5 bg-slate-800 max-h-[400px] overflow-y-auto overflow-x-hidden" style={{ overflow: 'scroll', scrollbarWidth: 'thin', overflowX: 'hidden' }}>
+          <div className="ml-0 md:ml-5 w-full md:w-[800px] rounded-sm">
+            <div  className="mt-5 p-4 bg-slate-800 max-h-[400px] overflow-y-auto overflow-x-hidden" style={{ overflow: 'scroll', scrollbarWidth: 'thin', overflowX: 'hidden' }}>
               <style>
                 {`
                   ::-webkit-scrollbar {

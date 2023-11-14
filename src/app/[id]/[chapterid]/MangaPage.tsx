@@ -1,29 +1,25 @@
-'use client'
+"use client";
 import Image from "next/image";
 import { useState } from "react";
-import Header from "~/app/components/Header";
 import Footer from "~/app/components/footer";
 
 type Images = {
   images: string[];
-}
+};
 
-export default function MangaPage (img : Images) {
-  
+export default function MangaPage(img: Images) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const totalPages = img.images.length;
 
   const imageUrl = img.images[currentPage];
 
-  console.log(imageUrl)
-  
   return (
     <>
-    <div className="flex items-center justify-center p-1">
-        {imageUrl && 
+      <div className="flex items-center justify-center p-1">
+        {imageUrl && (
           <Image
-          src={imageUrl}
+            src={imageUrl}
             alt={`Page ${currentPage + 1}`}
             key={currentPage}
             width={512}
@@ -33,7 +29,7 @@ export default function MangaPage (img : Images) {
               height: "100%",
             }}
           />
-        }
+        )}
       </div>
       <div className="mt-4 flex justify-center">
         {currentPage > 0 && (
@@ -46,14 +42,14 @@ export default function MangaPage (img : Images) {
         )}
         {totalPages && currentPage < totalPages - 1 && (
           <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          className="m-2 rounded-lg bg-slate-950 p-3"
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className="m-2 rounded-lg bg-slate-950 p-3"
           >
-          Próxima Página
+            Próxima Página
           </button>
-          )}
+        )}
       </div>
       <Footer />
     </>
-  )
+  );
 }
