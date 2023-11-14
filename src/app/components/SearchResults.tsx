@@ -1,4 +1,5 @@
-import searchManga from "../api/apiSearch";
+
+import axios from "axios";
 import Link from "next/link";
 
 type InputQuery = {
@@ -10,13 +11,46 @@ type MangaData = {
   title: string;
 }[];
 
-async function getSearchResponse(query: InputQuery) {
-  const data = (await searchManga(query.input)) as MangaData;
-  return data;
+const BASE_URL = "https://api.mangadex.org";
+type UnresolvedMangaData = {
+  data: [
+    {
+      id: string;
+      type: string;
+      attributes: {
+        title: {
+          "pt-br": string;
+          en: string;
+          "ja-ro": string;
+        };
+      };
+    },
+  ];
+};
+
+export async function searchManga(query: string) {
+  const response = await axios.get<UnresolvedMangaData>(`${BASE_URL}/manga?title=${query}`, 
+  {
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+
+  const data = response.data;
+  
+  if (data) {
+    const mangaData = data.data.map((manga) => ({
+      id: manga.id,
+      title: manga.attributes.title.en,
+    }));
+    return mangaData as MangaData;
+  }
 }
 
+
 export default async function SearchResults({ input: query }: InputQuery) {
-  const results = await getSearchResponse({ input: query });
+  const results = await searchManga(query);
 
   return (
     <div className="absolute left-0 top-full z-10 mt-2 flex  w-full text-white sm:w-3/4 lg:w-full">
