@@ -46,6 +46,7 @@ type CoverResponse = {
     data: CoverData  
 }
 
+
 async function fetchCoverFiles(idImage: string, idManga: string) {
     const response = await axios.get<CoverResponse>(`${BASE_URL}/cover/${idImage}`)
     if (response.data){
@@ -58,14 +59,21 @@ async function fetchCoverFiles(idImage: string, idManga: string) {
 }
 
 
-export default async function listMangas() {
+export default async function listMangas(
+    params: { 
+        params?: { 
+            order?: { 
+                rating?: string | undefined; 
+                followedCount?: string | undefined 
+            } | undefined; 
+            limit?: number | undefined 
+        } | undefined 
+    } | undefined
+    ) {
     const response = await axios.get<MangaResponse>(`${BASE_URL}/manga`, {
         params: {
-            order: {
-                followedCount: 'desc'
-            },
-            limit: 8,
-        },
+            ...params?.params
+        }
     })
 
     const mangaUnresolvedImage = []
