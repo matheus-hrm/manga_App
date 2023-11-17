@@ -2,6 +2,8 @@
 import axios from "axios";
 import Link from "next/link";
 
+const BASE_URL = "https://api.mangadex.org";
+
 type InputQuery = {
   input: string;
 };
@@ -11,7 +13,6 @@ type MangaData = {
   title: string;
 }[];
 
-const BASE_URL = "https://api.mangadex.org";
 type UnresolvedMangaData = {
   data: [
     {
@@ -29,13 +30,10 @@ type UnresolvedMangaData = {
 };
 
 export async function searchManga(query: string) {
-  const response = await axios.get<UnresolvedMangaData>(`${BASE_URL}/manga?title=${query}`, 
-  {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+
+  const url = 'https://corsproxy.io/?' 
+  
+  const response = await axios.get<UnresolvedMangaData>(`${url}${BASE_URL}/manga?title=${query}`);
 
   const data = response.data;
   
