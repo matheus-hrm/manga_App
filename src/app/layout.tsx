@@ -18,6 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={` ${roboto.variable}`}>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta property="og:title" content="MangaReader" />
+      <meta property="og:description" content="Leitura de mangás online com a api do mangadex.org" />
+      <meta property="og:image" content="/1124794.png" />
+
       <title>MangaReader</title>
       <link rel="icon" href="/favicon.png" type='icon'/>
       <body className="bg-[#03001F] text-white">
