@@ -1,33 +1,11 @@
 
 import axios from "axios";
 import Link from "next/link";
+import type { UnresolvedMangaData, MangaDataid, InputQuery } from "~/types";
 
 const BASE_URL = "https://api.mangadex.org";
 
-type InputQuery = {
-  input: string;
-};
 
-type MangaData = {
-  id: string;
-  title: string;
-}[];
-
-type UnresolvedMangaData = {
-  data: [
-    {
-      id: string;
-      type: string;
-      attributes: {
-        title: {
-          "pt-br": string;
-          en: string;
-          "ja-ro": string;
-        };
-      };
-    },
-  ];
-};
 
 export async function searchManga(query: string) {
 
@@ -42,7 +20,7 @@ export async function searchManga(query: string) {
       id: manga.id,
       title: manga.attributes.title.en,
     }));
-    return mangaData as MangaData;
+    return mangaData as MangaDataid;
   }
 }
 

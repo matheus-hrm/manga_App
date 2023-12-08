@@ -155,9 +155,7 @@ export default async function MangaPage({ params }: params) {
       <div>
         <Image
           src={imageResolved}
-          className="w-full h-[400px] object-cover blur-[5px] brightness-50
-          absolute z-[-1]
-          "
+          className="w-full h-[400px] object-cover blur-[5px] brightness-50 absolute z-[-1]"
           alt={manga.data.attributes.title.en}
           width={1920}
           height={400}

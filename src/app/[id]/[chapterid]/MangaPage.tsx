@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import Footer from "~/app/components/footer";
+import Footer from "~/app/components/Footer";
 
 type Images = {
   images: string[];
